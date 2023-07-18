@@ -7,6 +7,7 @@
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
+#include <cstdio>
 using namespace std;
 
 string palavra_secreta;
@@ -33,38 +34,58 @@ vector <string> le_arquivo() {
     if (resposta == 1) {
         cout << "Voce escolheu o tema frutas." << endl;
         ifstream arquivo("frutas.txt");
-        int qtd_palavras;
-        arquivo >> qtd_palavras;
 
-        for (int i = 0; i < qtd_palavras; i++) {
-            string palavras;
-            arquivo >> palavras;
-            lista.push_back(palavras);
+        if(arquivo.is_open()) {
+            int qtd_palavras;
+            arquivo >> qtd_palavras;
+
+            for (int i = 0; i < qtd_palavras; i++) {
+                string palavras;
+                arquivo >> palavras;
+                lista.push_back(palavras);
+            }
+            arquivo.close();
+            return lista;
+        } else {
+            cerr << "\nArquivo nao encontrado!"<<endl;
         }
     } else if (resposta == 2) {
         cout << "Voce escolheu o tema objetos." << endl;
         ifstream arquivo("objetos.txt");
-        int qtd_palavras;
-        arquivo >> qtd_palavras;
 
-        for (int i = 0; i < qtd_palavras; i++) {
-            string palavras;
-            arquivo >> palavras;
-            lista.push_back(palavras);
+        if(arquivo.is_open()) {
+            int qtd_palavras;
+            arquivo >> qtd_palavras;
+
+            for (int i = 0; i < qtd_palavras; i++) {
+                string palavras;
+                arquivo >> palavras;
+                lista.push_back(palavras);
+            }
+            arquivo.close();
+            return lista;
+        } else {
+            cerr <<"\nArquivo nao encontrado! "<<endl;
         }
     } else if (resposta == 3) {
         cout << "Voce escolheu o tema lugares." << endl;
         ifstream arquivo("lugares.txt");
-        int qtd_palavras;
-        arquivo >> qtd_palavras;
+        
+        if(arquivo.is_open()) {
+            int qtd_palavras;
+            arquivo >> qtd_palavras;
 
-        for (int i = 0; i < qtd_palavras; i++) {
-            string palavras;
-            arquivo >> palavras;
-            lista.push_back(palavras);
+            for (int i = 0; i < qtd_palavras; i++) {
+                string palavras;
+                arquivo >> palavras;
+                lista.push_back(palavras);
+            }
+            arquivo.close();
+            return lista;
+        } else {
+            cerr << "\nArquivo nao encontrado!"<<endl;
         }
     }
-    return lista;
 }
 
 ////Sorteio da palavra secreta.
@@ -141,6 +162,130 @@ void tentativas() {
     cout << endl;
 }
 
+vector <string> adiciona_arquivo(int escolha) {
+
+    vector <string> lista;
+
+    if (escolha == 1) {
+        ifstream arquivo("frutas.txt");
+
+        if(arquivo.is_open()) {
+            int qtd_palavras;
+            arquivo >> qtd_palavras;
+
+            for (int i = 0; i < qtd_palavras; i++) {
+                string palavras;
+                arquivo >> palavras;
+                lista.push_back(palavras);
+            }
+            arquivo.close();
+            return lista;
+        } else {
+            cerr << "\nArquivo nao encontrado!"<<endl;
+        }
+    } else if (escolha == 2) {
+        ifstream arquivo("objetos.txt");
+
+        if(arquivo.is_open()) {
+            int qtd_palavras;
+            arquivo >> qtd_palavras;
+
+            for (int i = 0; i < qtd_palavras; i++) {
+                string palavras;
+                arquivo >> palavras;
+                lista.push_back(palavras);
+            }
+            arquivo.close();
+            return lista;
+        } else {
+            cerr <<"\nArquivo nao encontrado! "<<endl;
+        }
+    } else if (escolha == 3) {
+        ifstream arquivo("lugares.txt");
+        
+        if(arquivo.is_open()) {
+            int qtd_palavras;
+            arquivo >> qtd_palavras;
+
+            for (int i = 0; i < qtd_palavras; i++) {
+                string palavras;
+                arquivo >> palavras;
+                lista.push_back(palavras);
+            }
+            arquivo.close();
+            return lista;
+        } else {
+            cerr << "\nArquivo nao encontrado!"<<endl;
+        }
+    }
+}
+
+void salva_arquivo(vector <string> nova_lista, int escolha) {
+
+    if (escolha == 1) {
+        ofstream arquivo("frutas.txt");
+        if (arquivo.is_open()) {
+            arquivo << nova_lista.size() << endl;
+
+            for(string palavra : nova_lista) {
+                arquivo << palavra << endl;
+            }
+            arquivo.close();
+        } else {
+            cerr << "Nao foi possivel abrir o arquivo para escrita!" << endl;
+        }
+    } else if (escolha == 2) {
+        ofstream arquivo("objetos.txt");
+        if (arquivo.is_open()) {
+            arquivo << nova_lista.size() << endl;
+
+            for(string palavra : nova_lista) {
+                arquivo << palavra << endl;
+            }
+            arquivo.close();
+        } else {
+            cerr << "Nao foi possivel abrir o arquivo para escrita!" << endl;
+        }
+    } else if (escolha == 3) {
+        ofstream arquivo("lugares.txt");
+        if (arquivo.is_open()) {
+            arquivo << nova_lista.size() << endl;
+
+            for(string palavra : nova_lista) {
+                arquivo << palavra << endl;
+            }
+            arquivo.close();
+        } else {
+            cerr << "Nao foi possivel abrir o arquivo para escrita!" << endl;
+        }
+    }
+}
+
+void adiciona_palavra(int escolha) {
+    cout << "Digite a nova palavra, utilizando letras maiusculas" << endl;
+    string nova_palavra;
+    cin >> nova_palavra;
+
+    if (escolha == 1) {
+        ifstream arquivo("frutas.txt");
+        vector <string> lista = adiciona_arquivo(escolha);
+        lista.push_back(nova_palavra);
+        salva_arquivo(lista, escolha);
+    } else if (escolha == 2) {
+        ifstream arquivo("objetos.txt");
+        vector <string> lista = adiciona_arquivo(escolha);
+        lista.push_back(nova_palavra);
+        salva_arquivo(lista, escolha);
+    } else if (escolha == 3) {
+        ifstream arquivo("lugares.txt");
+        vector <string> lista = adiciona_arquivo(escolha);
+        lista.push_back(nova_palavra);
+        salva_arquivo(lista, escolha);
+    }
+    cout << "Palavra adicionada com sucesso!" << endl;
+}
+
+
 int main() {
     cabecalho();
     sorteio();
@@ -158,6 +303,24 @@ int main() {
         cout << "Voce perdeu! Seus chutes acabaram, tente novamente." << endl;
     } else {
         cout << "Parabens! Voce ganhou." << endl;
+        cout << "Voce deseja adicionar uma nova palavra? 1 - SIM 2 - NAO." << endl;
+        int escolha;
+        cin >> escolha;
+        if (escolha == 1) {
+            cout << "Sua palavra se encaixa em: 1 - Frutas 2 - Objetos 3 - Lugares?" << endl;
+            int resposta;
+            cin >> resposta;
+            if (resposta == 1) {
+                int escolha = 1;
+                adiciona_palavra(escolha);
+            } else if (resposta == 2) {
+                int escolha = 2;
+                adiciona_palavra(escolha);
+            } else if (resposta == 3) {
+                int escolha = 3;
+                adiciona_palavra(escolha);
+            }
+        } 
     }
 
     return 0;
